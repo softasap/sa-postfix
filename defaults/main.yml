@@ -16,4 +16,4 @@ postfix_null_client_properties:
     - {regexp: "^inet_interfaces =*", line: "inet_interfaces = loopback-only"}
     - {regexp: "^mydestination =*", line: "mydestination = loopback-only"}
 
-postfix_properties: {{postfix_default_properties}}
+postfix_properties: "{{postfix_null_client_properties}}"

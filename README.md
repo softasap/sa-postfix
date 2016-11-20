@@ -44,9 +44,11 @@ To check, it actually sends - check
 
 ```shell
 
-echo "This is the body of the email" | mail -s "This is the subject line" your_email_address
+echo "This is the body of the email" | mail --debug-level 10 -s "This is the subject line" your_email_address
 
 ```
+
+And check in /var/log/mail.log. In 2016 with 98% mails will be rejected by +- known mail providers
 
 Note, that by default you have major chances, that sent mail will finish it's line in SPAM.  Configuring your MTA & DNS is out of scope for this role.
 
