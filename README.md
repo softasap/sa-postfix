@@ -27,7 +27,7 @@ Advanced:
      - {
          role: "sa-postfix",
          postfix_hostname: "appserver.example.com",
-         postfix_null_client_properties:
+         postfix_properties:
            - {regexp: "^myhostname =*", line: "myhostname = {{postfix_hostname}}"}
            - {regexp: "^myorigin =*", line: "myorigin = $mydomain"}
            - {regexp: "^relayhost =*", line: "relayhost = $mydomain"}
