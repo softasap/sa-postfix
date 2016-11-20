@@ -1,0 +1,22 @@
+---
+
+  - name: POSTFIX | Install mailutils 
+    apt: pkg=mailutils update_cache=yes
+    become: yes
+    tags:
+     - postfix
+
+  - name: POSTFIX | Install postfix
+    apt: pkg=postfix update_cache=yes
+    become: yes
+    tags:
+     - postfix
+
+
+  - name: POSTFIX | Patch /etc/postfix/main.cf
+    lineinfile: dest=/etc/postfix/main.conf  regexp="{{item.regexp}}" line="{{item.line}}" insertafter="{{item.insertafter | default('EOF')}}"
+    with_items: "{{postfix_properties | default([])}}"
+    notify: restart postfix
+    become: yes
+    tags:
+
