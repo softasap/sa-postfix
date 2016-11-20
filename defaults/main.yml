@@ -3,7 +3,7 @@
 
 role_dir: "{{role_path}}"  
 
-postfix_hostname: "hostname.example.com"
+postfix_hostname: "{{ansible_hostname}}"
 
 #http://www.postfix.org/STANDARD_CONFIGURATION_README.html#null_client
 
