@@ -19,4 +19,5 @@
     notify: restart postfix
     become: yes
     tags:
+     - postfix
 
