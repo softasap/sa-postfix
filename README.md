@@ -76,6 +76,29 @@ postfix reload
 
 be aware, that _all_ mail for root will be forwarded.
 
+## Rewriting sender domain
+
+in main.cf introduce
+
+```
+sender_canonical_maps = hash:/etc/postfix/canonical
+```
+
+edit /etc/postfix/canonical to contain smth like
+```
+root@example.com   no-reply@example.com
+@local.example.com       @example.com
+```
+
+to apply the settings:
+```shell
+
+postmap /etc/postfix/canonical
+postfix reload
+
+```
+
+
 ## Filtering emails you want to receive
 
 Once you're satisfied with the content filtering script:
