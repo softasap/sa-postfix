@@ -40,7 +40,7 @@ Advanced:
 
 # Misc hints
 
-To check, it actually sends - check
+## To check, it actually sends - check
 
 ```shell
 
@@ -51,6 +51,55 @@ echo "This is the body of the email" | mail --debug-level 10 -s "This is the sub
 And check in /var/log/mail.log. In 2016 with 98% mails will be rejected by +- known mail providers
 
 Note, that by default you have major chances, that sent mail will finish it's line in SPAM.  Configuring your MTA & DNS is out of scope for this role.
+
+## redirect local mail to external email address
+
+```shell
+lmtp_host_lookup = native
+smtp_host_lookup = native
+virtual_alias_maps = hash:/etc/postfix/virtual
+```
+
+in /etc/postfix/virtual configure redirection settings:
+
+```
+root   youremail@gmail.com
+munin  root
+```
+
+and apply the settings:
+
+```shell
+postmap /etc/postfix/virtual
+postfix reload
+```
+
+be aware, that _all_ mail for root will be forwarded.
+
+## Filtering emails you want to receive
+
+Once you're satisfied with the content filtering script:
+
+Create a dedicated local user account called "postfixfilter". This user handles all potentially dangerous mail content - that is why it should be a separate account. Do not use "nobody", and most certainly do not use "root" or "postfix".
+
+Create a directory /var/spool/filter that is accessible only to the "postfixfilter" user. This is where the content filtering script is supposed to store its temporary files.
+
+Configure Postfix to deliver mail to the content filter with the pipe delivery agent
+
+/etc/postfix/master.cf:
+```
+  # =============================================================
+  # service type  private unpriv  chroot  wakeup  maxproc command
+  #               (yes)   (yes)   (yes)   (never) (100)
+  # =============================================================
+  filter    unix  -       n       n       -       10      pipe
+    flags=Rq user=postfixfilter null_sender=
+    argv=/path/to/script -f ${sender} -- ${recipient}
+```
+
+Possible options: transfer emails into syslog events or, saying , sentry calls
+
+take a look on example in box-example/templates/content_filter.py.j2
 
 
 Copyright and license

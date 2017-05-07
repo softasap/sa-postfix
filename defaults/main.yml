@@ -3,6 +3,8 @@
 
 role_dir: "{{role_path}}"
 
+option_postfix_content_filtering: false
+
 postfix_hostname: "{{ansible_hostname}}"
 postfix_domain: "{{postfix_hostname}}"
 
@@ -16,7 +18,7 @@ postfix_null_client_properties:
     - {regexp: "^relayhost =*", line: "relayhost = $mydomain"}
     - {regexp: "^inet_interfaces =*", line: "inet_interfaces = loopback-only"}
     - {regexp: "^mydestination =*", line: "mydestination = loopback-only"}
-    - {regexp: "^smtpd_client_restrictions =*", line: "smtpd_client_restrictions = permit_mynetworks, reject"}        
+    - {regexp: "^smtpd_client_restrictions =*", line: "smtpd_client_restrictions = permit_mynetworks, reject"}
 
 postfix_self_client_properties:
     - {regexp: "^myhostname =*", line: "myhostname = {{postfix_hostname}}"}

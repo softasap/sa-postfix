@@ -1,6 +1,22 @@
 ---
 
-  - name: POSTFIX | Install mailutils 
+  - block:
+
+      - name: Postfix | Add postfix filter user
+        user: name="postfixfilter" shell="/bin/false"
+        become: yes
+        tags:
+          - postfix
+
+      - name: Postfix | Create working directory
+        file: path="/var/spool/filter" state="directory" owner="postfixfilter" group="postfixfilter"
+        become: yes
+        tags:
+          - postfix
+
+    when: option_postfix_content_filtering | default(false)
+
+  - name: POSTFIX | Install mailutils
     apt: pkg=mailutils update_cache=yes
     become: yes
     tags:
@@ -20,4 +36,3 @@
     become: yes
     tags:
      - postfix
-
